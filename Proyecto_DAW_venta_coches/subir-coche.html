@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Subir coche a Autos Turón</title>
+</head>
+<body>
+	<form action="modulos/almacenar-coche.php" method="post" enctype="multipart/form-data">
+		Marca: <input type="text" name="marca" required>
+		<br><br>
+		Modelo: <input type="text" name="modelo">
+		<br><br>
+		Potencia: <input type="text" name="potencia">
+		<br><br>
+		Nº Puertas: <input type="text" name="puertas">
+		<br><br>
+		Año matriculación: <input type="text" name="matriculacion">
+		<br><br>
+		Cambio: <input type="text" name="cambio">
+		<br><br>
+		Combustible: <input type="text" name="combustible">
+		<br><br>
+		Km: <input type="text" name="km">
+		<br><br>
+		Observaciones: <textarea name="observaciones"></textarea>
+		<br><br>
+		<input type="file" name="img[]" id="imagenes" accept=".jpg,.png" onchange="cargar_imagenes(event)" multiple required>
+		<input type="submit" value="Guardar Nuevo Coche">
+	</form>
+	<div id="previsualizacion-fotos"></div>
+
+	<script>
+		function cargar_imagenes(e) {
+			//Creo un contenedor por cada foto ya que el metodo .append() borra el childNode anterior
+			document.getElementById('previsualizacion-fotos').innerHTML = '';
+			for(let i = 0; i < e.target.files.length; i++){
+				document.getElementById('previsualizacion-fotos').innerHTML += '<div id="preview_' + i + '" class="preview"></div>';
+			}
+			//Leo cada archivo subido y lo añado a cada contenedor anterior
+			for(let i = 0; i < e.target.files.length; i++){
+				// Creamos el objeto de la clase FileReader
+				let reader = new FileReader();
+				// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+				reader.readAsDataURL(e.target.files[i]);
+				// Le decimos que cuando este listo ejecute el código interno
+				reader.onload = function(){
+					let preview = document.getElementById('preview_' + i),
+							image = document.createElement('img');
+					image.src = reader.result;
+					preview.innerHTML = '';
+					preview.append(image);
+				};
+			}
+		}
+	</script>
+</body>
+</html>
